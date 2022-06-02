@@ -22,7 +22,7 @@ def insertDataset():
         else:
             clearScreen()
             print("Please enter a valid choice")
-            input("Press enter to continue")
+            input("Press enter to continue\n")
             return
              
         tp.insertDataset(text)
@@ -31,13 +31,13 @@ def insertDataset():
     except ValueError:
         clearScreen()
         print("Please enter a valid choice")
-        input("Press enter to continue")
+        input("Press enter to continue\n")
 
 def printDataset():
     dataset = tp.getDataset()
     clearScreen()
     print(dataset)
-    input("\n\n\nPress enter to continue")
+    input("\n\n\nPress enter to continue\n")
     clearScreen()
 
 def saveDataset():
@@ -67,3 +67,18 @@ def subURLs():
     change = input("Sub for (Defaults for \"URL\"): ")
     change = 'URL' if change == '' else change
     tp.subURLs(change)
+
+def removeEmojis():
+    tp.removeEmojis()
+
+def demojize():
+    tp.demojize()
+
+def removeHTMLTags():
+    tp.removeHTMLTags()
+
+def translateAllTextToOriginalLanguage():
+    tp.translateAllTextToOriginalLanguage()
+
+def removeStopWords():
+    tp.removeStopWords()
