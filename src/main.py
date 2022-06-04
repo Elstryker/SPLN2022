@@ -28,6 +28,8 @@ class Main():
     11 - Remove HTML Tags
     12 - Translate All Text
     13 - Remove Stop Words
+    14 - NER
+    15 - Lemmatization
     """)
 
 
@@ -49,7 +51,10 @@ class Main():
                 10 : menuLogic.demojize,
                 11 : menuLogic.removeHTMLTags,
                 12 : menuLogic.translateAllTextToOriginalLanguage,
-                13 : menuLogic.removeStopWords
+                13 : menuLogic.translate,
+                14 : menuLogic.removeStopWords,
+                15 : menuLogic.ner,
+                16 : menuLogic.lemmatization
             }
         
         else:

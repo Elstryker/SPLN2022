@@ -80,5 +80,14 @@ def removeHTMLTags():
 def translateAllTextToOriginalLanguage():
     tp.translateAllTextToOriginalLanguage()
 
+def translate():
+    tp.translate()
+
 def removeStopWords():
     tp.removeStopWords()
+
+def ner():
+    tp.ner()
+
+def lemmatization():
+    tp.lemmatization()

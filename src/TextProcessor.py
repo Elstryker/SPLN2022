@@ -1,5 +1,9 @@
-import string, re, cleantext as ct, spacy
+import string, re, spacy
+import cleantext as ct
+import googletrans
+import nltk
 from googletrans import Translator
+from nltk.stem import WordNetLemmatizer
 
 class TextProcessor():
 
@@ -28,6 +32,7 @@ class TextProcessor():
         remove = string.punctuation + '–'
         remove = remove.replace("-", "") # Don't remove hyphens
         pattern = r"[{}]".format(remove) # Create the pattern
+        
 
         self.dataset = re.sub(rf'{pattern}', "", self.dataset) # Remove all punctuation except hyphen
         self.dataset = re.sub(r'\s+\-', "", self.dataset) # Remove isolated hyphens (This is pretended if we want to mantain hyphenized words)
@@ -64,11 +69,20 @@ class TextProcessor():
 
         temporaryLang = 'en' if self.lang != 'en' else 'de'
 
-
         self.dataset = translator.translate(self.dataset,temporaryLang,self.lang)
         self.dataset = translator.translate(self.dataset.text,self.lang,temporaryLang)
 
         self.dataset = self.dataset.text
+
+    def translate(self):
+        translator = Translator()
+
+        if self.lang == '':
+            self.lang = 'en'
+
+        temporaryLang = 'en' if self.lang != 'en' else 'de'
+
+        self.dataset = translator.translate(self.dataset,temporaryLang,self.lang)
 
     def removeStopWords(self):
         stopwords = self.nlp.Defaults.stop_words
@@ -78,3 +92,23 @@ class TextProcessor():
                 lst.append(token)
 
         self.dataset = ' '.join(lst)
+    
+    def ner(self):
+        doc = self.nlp(self.dataset)
+        self.dataset += "\nNAMED ENTITY RECOGNITION\n"
+        for ent in doc.ents:
+            frase = "\n"+ent.text +":"+ent.label_+"\n"
+            self.dataset += frase
+    
+    def lemmatization(self):
+        '''lang = simplemma.load_data(self.lang)
+        dataset = self.dataset.split(" ")
+        while("" in dataset) :
+            dataset.remove("")
+        self.dataset += "\n\nLemmatization\n"
+        for word in dataset:
+            self.dataset += word +": "+simplemma.lemmatize(word,lang)+"\n"'''
+        doc = self.nlp(self.dataset)
+        self.dataset += "\n\nLemmatization\n"
+        for token in doc:
+            self.dataset += token.text +": "+token.lemma_+"\n"
