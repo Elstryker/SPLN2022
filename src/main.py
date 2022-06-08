@@ -26,10 +26,12 @@ class Main():
     9 - Remove Emojis
     10 - Demojize
     11 - Remove HTML Tags
-    12 - Translate All Text
-    13 - Remove Stop Words
-    14 - NER
-    15 - Lemmatization
+    12 - Translate All Text to original language
+    13 - Translate
+    14 - Remove Stop Words
+    15 - NER
+    16 - Lemmatization
+    17 - Spellchecking
     """)
 
 
@@ -54,7 +56,8 @@ class Main():
                 13 : menuLogic.translate,
                 14 : menuLogic.removeStopWords,
                 15 : menuLogic.ner,
-                16 : menuLogic.lemmatization
+                16 : menuLogic.lemmatization,
+                17 : menuLogic.spellchecking
             }
         
         else:

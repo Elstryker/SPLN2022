@@ -1,10 +1,10 @@
+from cProfile import label
 import string, re, spacy
 import cleantext as ct
-import googletrans
-import nltk
 from googletrans import Translator
 from nltk.stem import WordNetLemmatizer
-
+from bs4 import BeautifulSoup
+from autocorrect import Speller
 class TextProcessor():
 
     def __init__(self):
@@ -94,21 +94,74 @@ class TextProcessor():
         self.dataset = ' '.join(lst)
     
     def ner(self):
+        
         doc = self.nlp(self.dataset)
-        self.dataset += "\nNAMED ENTITY RECOGNITION\n"
+        html = '''
+        <html>
+            <head>
+             <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+                <title> 
+                    Named Entity Recognition 
+                </title>
+            </head>
+        <body>
+            <table class="w3-table-all">
+                <tr>
+                    <th> Word </th>
+                    <th> Entity </th>
+                    <th> Occurences </th>
+                </tr>
+            </table>
+        </body>
+        
+        '''
+        soup = BeautifulSoup(html,"html5lib")
+        file = open("../output/NER.html","w")
+        
+        dic=dict()
+
         for ent in doc.ents:
-            frase = "\n"+ent.text +":"+ent.label_+"\n"
-            self.dataset += frase
-    
+            if ent.text not in dic:
+                dic[ent.text]={"label":"NONE","count":0}
+            if(dic[ent.text]["label"]==ent.label_):
+                dic[ent.text]["count"]+=1
+            else:    
+                dic[ent.text]["label"]=ent.label_
+                dic[ent.text]["count"]+=1
+        
+        
+        for key,value in dic.items():
+            text = soup.new_tag("td")
+            text.string = key
+            label = soup.new_tag("td")
+            label.string = value["label"]
+            contador = soup.new_tag("td")
+            contador.string = str(value["count"])
+            tr = soup.new_tag("tr")
+            tr.append(text)
+            tr.append(label)
+            tr.append(contador)
+            
+            addingItem = soup.findAllNext("tr")[-1]
+            addingItem.insert_after(tr)
+            
+
+            
+        file.write(str(soup.prettify()))
+
+
     def lemmatization(self):
-        '''lang = simplemma.load_data(self.lang)
-        dataset = self.dataset.split(" ")
-        while("" in dataset) :
-            dataset.remove("")
-        self.dataset += "\n\nLemmatization\n"
-        for word in dataset:
-            self.dataset += word +": "+simplemma.lemmatize(word,lang)+"\n"'''
         doc = self.nlp(self.dataset)
-        self.dataset += "\n\nLemmatization\n"
         for token in doc:
-            self.dataset += token.text +": "+token.lemma_+"\n"
+            count = self.dataset.count(token.text)
+            self.dataset = self.dataset.replace(token.text,token.lemma_,count)
+    
+    def spellchecking(self):
+        spell = Speller(lang=self.lang)
+        doc = self.nlp(self.dataset)
+        for frase in doc.sents:
+            for word in frase:
+                if(word.text!=spell(word.text)):
+                    self.dataset = self.dataset.replace(word.text,spell(word.text))
+
+        

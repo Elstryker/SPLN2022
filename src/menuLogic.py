@@ -91,3 +91,6 @@ def ner():
 
 def lemmatization():
     tp.lemmatization()
+
+def spellchecking():
+    tp.spellchecking()
