@@ -20,18 +20,19 @@ class Main():
     3 - Save dataset as a file
     4 - Remove Ponctuation
     5 - Normalize Whitespaces
-    6 - Convert to lower case
-    7 - Substitute emails
-    8 - Substitute URLs
-    9 - Remove Emojis
-    10 - Demojize
-    11 - Remove HTML Tags
-    12 - Translate All Text to original language
-    13 - Translate
-    14 - Remove Stop Words
-    15 - NER
-    16 - Lemmatization
-    17 - Spellchecking
+    6 - Convert to ASCII (Uniformize characters)
+    7 - Convert to lower case
+    8 - Substitute emails
+    9 - Substitute URLs
+    10 - Remove Emojis
+    11 - Demojize
+    12 - Remove HTML Tags
+    13 - Translate All Text to original language
+    14 - Translate To English
+    15 - Remove Stop Words
+    16 - NER
+    17 - Lemmatization
+    18 - Spellchecking
     """)
 
 
@@ -46,18 +47,19 @@ class Main():
                 3 : menuLogic.saveDataset,
                 4 : menuLogic.removePonctuation,
                 5 : menuLogic.normalizeWhitespaces,
-                6 : menuLogic.toLowerCase,
-                7 : menuLogic.subEmails,
-                8 : menuLogic.subURLs,
-                9 : menuLogic.removeEmojis,
-                10 : menuLogic.demojize,
-                11 : menuLogic.removeHTMLTags,
-                12 : menuLogic.translateAllTextToOriginalLanguage,
-                13 : menuLogic.translate,
-                14 : menuLogic.removeStopWords,
-                15 : menuLogic.ner,
-                16 : menuLogic.lemmatization,
-                17 : menuLogic.spellchecking
+                6 : menuLogic.convertToASCII,
+                7 : menuLogic.toLowerCase,
+                8 : menuLogic.subEmails,
+                9 : menuLogic.subURLs,
+                10 : menuLogic.removeEmojis,
+                11 : menuLogic.demojize,
+                12 : menuLogic.removeHTMLTags,
+                13 : menuLogic.translateAllTextToOriginalLanguage,
+                14 : menuLogic.translateToEnglish,
+                15 : menuLogic.removeStopWords,
+                16 : menuLogic.ner,
+                17 : menuLogic.lemmatization,
+                18 : menuLogic.spellchecking
             }
         
         else:

@@ -55,6 +55,9 @@ def removePonctuation():
 def normalizeWhitespaces():
     tp.normalizeWhitespaces()
 
+def convertToASCII():
+    tp.convertToASCII()
+
 def toLowerCase():
     tp.toLowerCase()
 
@@ -80,8 +83,8 @@ def removeHTMLTags():
 def translateAllTextToOriginalLanguage():
     tp.translateAllTextToOriginalLanguage()
 
-def translate():
-    tp.translate()
+def translateToEnglish():
+    tp.translateToEnglish()
 
 def removeStopWords():
     tp.removeStopWords()

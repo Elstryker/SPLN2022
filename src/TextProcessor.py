@@ -2,7 +2,6 @@ from cProfile import label
 import string, re, spacy
 import cleantext as ct
 from googletrans import Translator
-from nltk.stem import WordNetLemmatizer
 from bs4 import BeautifulSoup
 from autocorrect import Speller
 class TextProcessor():
@@ -14,7 +13,12 @@ class TextProcessor():
         self.nlp = None
 
     def insertDataset(self, dataset):
-        self.lang = self.translator.detect(dataset).lang
+        try:
+            self.lang = self.translator.detect(dataset).lang
+        except:
+            self.lang = 'en'
+            print("Could not detect language, assuming english")
+        
         self.dataset = dataset
         print(self.lang)
 
@@ -23,7 +27,7 @@ class TextProcessor():
         elif self.lang == 'pt':
             self.nlp = spacy.load('pt_core_news_sm')
         else:
-            "Language not supported, some functionalities may not work properly"
+            print("Language not supported, some functionalities may not work properly")
 
     def getDataset(self):
         return self.dataset
@@ -42,6 +46,9 @@ class TextProcessor():
     def normalizeWhitespaces(self):
         self.dataset = ct.normalize_whitespace(self.dataset)
 
+    def convertToASCII(self):
+        self.dataset = ct.to_ascii_unicode(self.dataset)
+
     def toLowerCase(self):
         self.dataset = self.dataset.lower()
 
@@ -52,6 +59,7 @@ class TextProcessor():
         self.dataset = ct.replace_urls(self.dataset,change)
 
     def removeEmojis(self):
+        self.dataset = ct.emojize(self.dataset)
         self.dataset = ct.remove_emoji(self.dataset)
 
     def demojize(self):
@@ -74,15 +82,17 @@ class TextProcessor():
 
         self.dataset = self.dataset.text
 
-    def translate(self):
+    def translateToEnglish(self):
         translator = Translator()
 
         if self.lang == '':
             self.lang = 'en'
 
-        temporaryLang = 'en' if self.lang != 'en' else 'de'
+        temporaryLang = 'en'
 
         self.dataset = translator.translate(self.dataset,temporaryLang,self.lang)
+
+        self.dataset = self.dataset.text
 
     def removeStopWords(self):
         stopwords = self.nlp.Defaults.stop_words
